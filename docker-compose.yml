@@ -1,0 +1,33 @@
+version: '3.1'
+#servicio de la aplicacion - python
+services:
+  web:
+    #imagen de la aplicacion
+    image: odoo:16.0
+    # sericio de base de datos que utiliza la aplicacion esta aplicacion depende de este servicio
+   # no arrancara hasta que el servicio este levantado
+    depends_on:
+      - mydb
+       #mapeo de puertos para poder acceder desde la maquina
+    ports:
+      - "8069:8069"
+       #variables de entorno
+    environment:
+       #nombre del gestor de base de datos
+      - HOST=mydb
+       # usuario administrador de la base de datos
+      - USER=odoo
+       #contraseña del usuario administrador de la base de datos
+      - PASSWORD=myodoo
+        #servicio gestor de la base de datos
+  mydb:
+    image: postgres:15
+    #imagen utilizada y su version
+    ports:
+       #mapeo de puertos para poder acceder a las bases de datos desde la maquina
+      - "5432:5432"
+       #variables de entorno de la imagen de postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=myodoo
+      - POSTGRES_USER=odoo
